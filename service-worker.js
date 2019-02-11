@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "datopian.github.io/import-ui/precache-manifest.251e573d227c12ec3e181b836852710c.js"
+  "/import-ui/precache-manifest.62ae2aee8b3f7c368f2155474579a50f.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("datopian.github.io/import-ui/index.html", {
+workbox.routing.registerNavigationRoute("/import-ui/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
