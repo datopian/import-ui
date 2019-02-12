@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/import-ui/static/media/datopian-logo.a5f7af6f.png"
   },
   {
-    "revision": "4e9a467e5b5728747d52",
+    "revision": "2d18e6592bc37f7de6c8",
     "url": "/import-ui/static/css/main.26542b39.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/import-ui/static/js/2.e349c9bb.chunk.js"
   },
   {
-    "revision": "4e9a467e5b5728747d52",
-    "url": "/import-ui/static/js/main.4e9a467e.chunk.js"
+    "revision": "2d18e6592bc37f7de6c8",
+    "url": "/import-ui/static/js/main.2d18e659.chunk.js"
   },
   {
     "revision": "05acfdb568b3df49ad31355b19495d4a",
@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/import-ui/static/css/2.5217b1e9.chunk.css"
   },
   {
-    "revision": "076cbfe70ecd02ca0f74e761a448cfb5",
+    "revision": "c8834e3d40fbf934f8e036aeb8fbdd38",
     "url": "/import-ui/index.html"
   }
 ];
