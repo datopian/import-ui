@@ -1,17 +1,17 @@
 {
-  "main.css": "/import-ui/static/css/main.687c7f99.chunk.css",
-  "main.js": "/import-ui/static/js/main.80534082.chunk.js",
-  "main.js.map": "/import-ui/static/js/main.80534082.chunk.js.map",
+  "main.css": "/import-ui/static/css/main.bb945623.chunk.css",
+  "main.js": "/import-ui/static/js/main.56b2fea5.chunk.js",
+  "main.js.map": "/import-ui/static/js/main.56b2fea5.chunk.js.map",
   "runtime~main.js": "/import-ui/static/js/runtime~main.2366545a.js",
   "runtime~main.js.map": "/import-ui/static/js/runtime~main.2366545a.js.map",
   "static/css/2.aba8bceb.chunk.css": "/import-ui/static/css/2.aba8bceb.chunk.css",
-  "static/js/2.ecd42638.chunk.js": "/import-ui/static/js/2.ecd42638.chunk.js",
-  "static/js/2.ecd42638.chunk.js.map": "/import-ui/static/js/2.ecd42638.chunk.js.map",
+  "static/js/2.6a21d892.chunk.js": "/import-ui/static/js/2.6a21d892.chunk.js",
+  "static/js/2.6a21d892.chunk.js.map": "/import-ui/static/js/2.6a21d892.chunk.js.map",
   "index.html": "/import-ui/index.html",
-  "precache-manifest.20855ae146975dd346f17f2731064514.js": "/import-ui/precache-manifest.20855ae146975dd346f17f2731064514.js",
+  "precache-manifest.ba885b45d7c6d70247166149113b34fe.js": "/import-ui/precache-manifest.ba885b45d7c6d70247166149113b34fe.js",
   "service-worker.js": "/import-ui/service-worker.js",
   "static/css/2.aba8bceb.chunk.css.map": "/import-ui/static/css/2.aba8bceb.chunk.css.map",
-  "static/css/main.687c7f99.chunk.css.map": "/import-ui/static/css/main.687c7f99.chunk.css.map",
+  "static/css/main.bb945623.chunk.css.map": "/import-ui/static/css/main.bb945623.chunk.css.map",
   "static/media/datopian-logo.png": "/import-ui/static/media/datopian-logo.a5f7af6f.png",
-  "static/media/main.css": "/import-ui/static/media/ionicons.621bd386.svg"
+  "static/media/datopian.css": "/import-ui/static/media/ionicons.621bd386.svg"
 }

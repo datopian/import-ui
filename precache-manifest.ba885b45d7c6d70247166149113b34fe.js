@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/import-ui/static/media/datopian-logo.a5f7af6f.png"
   },
   {
-    "revision": "80534082a8d79663f9eb",
-    "url": "/import-ui/static/css/main.687c7f99.chunk.css"
+    "revision": "56b2fea532de1ef10e97",
+    "url": "/import-ui/static/css/main.bb945623.chunk.css"
   },
   {
     "revision": "2366545a540d7a9cab48",
@@ -16,12 +16,12 @@ self.__precacheManifest = [
     "url": "/import-ui/static/media/ionicons.621bd386.svg"
   },
   {
-    "revision": "ecd42638e551fdb5ee80",
-    "url": "/import-ui/static/js/2.ecd42638.chunk.js"
+    "revision": "6a21d892795c936b98c7",
+    "url": "/import-ui/static/js/2.6a21d892.chunk.js"
   },
   {
-    "revision": "80534082a8d79663f9eb",
-    "url": "/import-ui/static/js/main.80534082.chunk.js"
+    "revision": "56b2fea532de1ef10e97",
+    "url": "/import-ui/static/js/main.56b2fea5.chunk.js"
   },
   {
     "revision": "05acfdb568b3df49ad31355b19495d4a",
@@ -36,11 +36,11 @@ self.__precacheManifest = [
     "url": "/import-ui/static/media/ionicons.24712f6c.ttf"
   },
   {
-    "revision": "ecd42638e551fdb5ee80",
+    "revision": "6a21d892795c936b98c7",
     "url": "/import-ui/static/css/2.aba8bceb.chunk.css"
   },
   {
-    "revision": "49b2fd18e72ad9e82a86155a22def044",
+    "revision": "ab39fd269169a18cdcf753b6f258c334",
     "url": "/import-ui/index.html"
   }
 ];
