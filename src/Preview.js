@@ -14,17 +14,18 @@ class Preview extends Component {
         <h1>Preview</h1>
         <p className="lead">This is the preview page.</p>
         <FileConsumer>
-          {({ file, data }) => (
+          {({ file, data, metadata, updateMetadata }) => (
             <div>
                 {file && data ? (
-                  <div><h2>{file.name}</h2>
-                  <p>
-                   <ReactTable
-                    data={data.data}
-                    defaultPageSize={10}
-                    columns={data.cols} />
+                  <div>
+										<input id="title" onChange={updateMetadata} value={metadata.title} type="text" />
+										<p>
+										 <ReactTable
+											data={data.data}
+											defaultPageSize={5}
+											columns={data.cols} />
                     </p>
-                    </div>
+									</div>
                 ) : (
                   <Redirect to="/"/>
                 )}

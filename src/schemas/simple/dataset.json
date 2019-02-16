@@ -1,0 +1,33 @@
+{
+  "title": "Dataset",
+  "description": "A simple dataset.",
+  "type": "object",
+  "required": [
+    "title"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "license": {
+      "type": "string",
+      "title": "License",
+      "description": "A license for the dataset.",
+      "enum": ["License 1", "License 2"]
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "created": {
+      "type": "string",
+      "title": "Created",
+      "format": "date-time"
+    },
+    "author": {
+      "type": "string",
+      "title": "Author"
+    }
+  }
+}

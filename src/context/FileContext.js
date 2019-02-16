@@ -1,5 +1,6 @@
 import React from 'react'
 import Papa from 'papaparse';
+//import DataJS from 'data.js';
 
 const FileContext = React.createContext()
 
@@ -8,6 +9,7 @@ class FileProvider extends React.Component {
     file: false,
     data: null,
     type: null,
+    metadata: {},
     step: "home"
   }
 
@@ -15,6 +17,9 @@ class FileProvider extends React.Component {
     super();
     this.fileUpload = this.fileUpload.bind(this);
     this.stepChange = this.stepChange.bind(this);
+    this.updateMetadata = this.updateMetadata.bind(this);
+    this.loadDefault = this.loadDefault.bind(this);
+    this.cancelUpload = this.cancelUpload.bind(this);
   }
 
   fileData(file) {
@@ -33,7 +38,45 @@ class FileProvider extends React.Component {
     });
   }
 
-  fileUpload(e) {
+  cancelUpload() {
+    const file = null;
+    this.setState({file});
+  }
+
+  updateMetadata(e) {
+    // This means we are using the json schema form.
+    if ('edit' in e) {
+      const metadata = e.formData;
+      this.setState({metadata});
+    }
+    else {
+      const metadata = this.state.metadata;
+      metadata.title = e.target.value
+      this.setState({metadata});
+    }
+  }
+
+  loadDefault(e) {
+    Papa.parse("http://demo.getdkan.com/sites/default/files/PropertyCrimesByCity_3.csv", {
+      download: true,
+      complete: (data) => {
+        data.cols = data.meta.fields.map((key) => {
+          key = key ? key : ' ';
+          return {
+            Header: key,
+            accessor: key,
+          }
+        });
+        const file = {
+          name: "PropertyCrimesByCity.csv"
+        }
+        this.setState({data, file});
+      },
+      header: true
+    });
+  }
+
+  async fileUpload(e) {
     const file = e.target.files[0];
     if (file.type === 'text/csv') {
       this.fileData(file);
@@ -49,6 +92,11 @@ class FileProvider extends React.Component {
   }
 
   render() {
+    // Start with the file name if we don't have a title yet.
+    if (!('title' in this.state.metadata) && this.state.file && 'name' in this.state.file) {
+      this.state.metadata.title = this.state.file.name; // eslint-disable-line react/no-direct-mutation-state
+    }
+
     return (
       <FileContext.Provider
         value={{
@@ -56,6 +104,10 @@ class FileProvider extends React.Component {
           fileUpload: this.fileUpload,
           step: this.state.step,
           data: this.state.data,
+          metadata: this.state.metadata,
+          updateMetadata: this.updateMetadata,
+          loadDefault: this.loadDefault,
+          cancelUpload: this.cancelUpload,
           type: this.state.type,
           stepChange: this.stepChange
         }}

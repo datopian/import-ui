@@ -7,6 +7,7 @@ import Pager from './components/Pager';
 
 import Home from './Home'
 import Preview from './Preview'
+import Detail from './Detail'
 import Publish from './Publish'
 
 import { FileProvider } from './context/FileContext';
@@ -14,8 +15,9 @@ import { FileProvider } from './context/FileContext';
 class App extends Component {
   render() {
     const home =   <Home />
-    const publish =   <Publish />
     const preview = <Preview />
+    const detail =   <Detail />
+    const publish =   <Publish />
     return (
       <div>
         <div className='App'>
@@ -25,6 +27,7 @@ class App extends Component {
               <Breadcrumb />
               <Route exact={true} path='/' render={()=>(home)} />
               <Route exact={true} path='/preview' render={()=>(preview)} />
+              <Route exact={true} path='/detail' render={()=>(detail)} />
               <Route exact={true} path='/publish' render={()=>(publish)} />
               <Pager />
             </FileProvider>

@@ -5,9 +5,11 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.0",
+    "data.js": "^0.11.5",
     "papaparse": "^4.6.3",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "react-jsonschema-form": "^1.2.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.4",

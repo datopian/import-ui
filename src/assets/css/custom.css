@@ -1,3 +1,29 @@
 header.navigation .navigation-wrapper {
   padding: 15px;
+  max-width: 100%;
 } 
+input#title {
+  border: none;
+  font-size: 2em;
+  font-weight: bold;
+  padding-left: 0px;
+}
+#file-name {
+  float:left;
+  padding: 0 10px 0 0;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+#file-desc {
+  display: block;
+  height: 110px;
+}
+#file-close {
+  float: left;
+  color: #dc3545;
+  background-color: transparent;
+  background-image: none;
+  border-color: #dc3545;
+  border: 1px solid red;
+  padding: 5px;
+}
