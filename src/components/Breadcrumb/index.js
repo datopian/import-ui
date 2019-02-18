@@ -24,11 +24,32 @@ export default class NavBar extends React.Component {
         </>
       );
     }
+    else if (step === "schema") {
+      breadcrumb = (
+        <>
+        <li className="breadcrumb-item"><Link data="home" onClick={stepChange} to="/">Home</Link></li>
+        <li className="breadcrumb-item"><Link data="preview" onClick={stepChange} to="/preview">Preview</Link></li>
+        <li className="breadcrumb-item active" aria-current="page">Schema</li>
+        </>
+      );
+    }
+    else if (step === "detail") {
+      breadcrumb = (
+        <>
+        <li className="breadcrumb-item"><Link data="home" onClick={stepChange} to="/">Home</Link></li>
+        <li className="breadcrumb-item"><Link data="preview" onClick={stepChange} to="/preview">Preview</Link></li>
+        <li className="breadcrumb-item"><Link data="schema" onClick={stepChange} to="/schema">Schema</Link></li>
+        <li className="breadcrumb-item active" aria-current="page">Detail</li>
+        </>
+      );
+    }
     else if (step === "publish") {
       breadcrumb = (
         <>
         <li className="breadcrumb-item"><Link data="home" onClick={stepChange} to="/">Home</Link></li>
         <li className="breadcrumb-item"><Link data="preview" onClick={stepChange} to="/preview">Preview</Link></li>
+        <li className="breadcrumb-item"><Link data="schema" onClick={stepChange} to="/schema">Schema</Link></li>
+        <li className="breadcrumb-item"><Link data="detail" onClick={stepChange} to="/detail">Detail</Link></li>
         <li className="breadcrumb-item active" aria-current="page">Publish</li>
         </>
       );

@@ -57,7 +57,7 @@ class FileProvider extends React.Component {
   }
 
   loadDefault(e) {
-    Papa.parse("http://demo.getdkan.com/sites/default/files/PropertyCrimesByCity_3.csv", {
+    Papa.parse("https://s3.amazonaws.com/dkan-default-content-files/files/Polling_Places_Madison_0.csv", {
       download: true,
       complete: (data) => {
         data.cols = data.meta.fields.map((key) => {
@@ -68,7 +68,8 @@ class FileProvider extends React.Component {
           }
         });
         const file = {
-          name: "PropertyCrimesByCity.csv"
+          name: "Polling_Places_Madison.csv",
+          size: 17653
         }
         this.setState({data, file});
       },
@@ -80,6 +81,7 @@ class FileProvider extends React.Component {
     const file = e.target.files[0];
     if (file.type === 'text/csv') {
       this.fileData(file);
+      console.log(file);
       this.setState({ file, type: null });
     } else {
       this.setState({ type: "wrong"});

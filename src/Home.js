@@ -9,7 +9,6 @@ class Home extends Component {
 
     return (
       <>
-      <main role="main" className="container-fluid">
         <h1>Welcome</h1>
         <p className="lead">This is the home page.</p>
         <FileConsumer>
@@ -39,7 +38,6 @@ class Home extends Component {
             </div>
           )}
         </FileConsumer>
-      </main>
       </>
     );
   }

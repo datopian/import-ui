@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from '../../assets/images/datopian-logo.png';
-import { NavLink as Link } from 'react-router-dom';
 
 class Header extends React.Component {
 
@@ -9,7 +8,7 @@ class Header extends React.Component {
         <header className="navigation" role="banner">
           <div className="navigation-wrapper">
             <div className="branding">
-              <Link className='logo' to="/"><img alt="logo" src={logo}/></Link>
+              <img alt="logo" src={logo}/>
             </div>
           </div>
         </header>

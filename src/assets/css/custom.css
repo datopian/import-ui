@@ -8,6 +8,13 @@ input#title {
   font-weight: bold;
   padding-left: 0px;
 }
+main {
+	padding: 20px 15px;
+}
+.branding img {
+	max-height: 60px;
+	padding: 0.8em 0;
+}
 #file-name {
   float:left;
   padding: 0 10px 0 0;
@@ -26,4 +33,57 @@ input#title {
   border-color: #dc3545;
   border: 1px solid red;
   padding: 5px;
+}
+.pagination {
+	margin: 30px 0;
+}
+#publish {
+	margin: 0 0 40px 0;
+	width: 25%;
+  font-size: 1.5em;
+	background-color: #3790c7;
+}
+footer {
+	background-color: #e9ecef;
+	padding-bottom: 20px;
+}
+.loading-button__confetti {
+	position: absolute !important;
+	top: 50%;
+	left: 15%;
+}
+*{margin:0;box-sizing:border-box;}
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
+#data-table .rt-resizable-header {
+  display: none;
+}
+.schema.edit-button {
+  float: right;
+}
+.schema.edit-button:hover {
+  color: #FFF;
+}
+.schema.select {
+  margin-bottom: 0
+}
+#schema-help {
+  text-align: right;
+  font-weight: bold;
+}
+#schema-help .svg-inline--fa.fa-w-16 {
+	color: #3790c7;
+  width: .7em;
+}
+.schema-help-row:first-child {
+  height: 40px;
+}
+.schema-help-row {
+  height: 46px;
 }

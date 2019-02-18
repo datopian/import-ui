@@ -9,17 +9,10 @@ const log = (type) => console.log.bind(console, type);
 
 class Publish extends Component {
 
-  fileUpload() {
-    return (
-      <div>No file</div>
-    );
-  }
-
   render() {
 
     return (
       <>
-      <main role="main" className="container-fluid">
         <h1>Detail</h1>
         <p className="lead">Time to add metadata.</p>
         <FileConsumer>
@@ -42,8 +35,6 @@ class Publish extends Component {
             </div>
           )}
         </FileConsumer>
-
-      </main>
       </>
     );
   }

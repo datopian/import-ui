@@ -2,30 +2,26 @@ import React, { Component } from 'react';
 import { FileConsumer } from './context/FileContext';
 import { Redirect } from 'react-router'
 import 'react-table/react-table.css';
-import ReactTable from 'react-table';
+import SchemaTable from './components/SchemaTable';
 import filesize from 'filesize';
 
-class Preview extends Component {
+class Schema extends Component {
 
 
   render() {
     return (
       <>
-        <h1>Preview</h1>
-        <p className="lead">This is the preview page.</p>
+        <h1>Edit Schema</h1>
+        <p className="lead">Edit the schema for your package..</p>
         <FileConsumer>
           {({ file, data, metadata, updateMetadata }) => (
             <div>
                 {file && data ? (
                   <div>
 										<input id="title" onChange={updateMetadata} value={metadata.title} type="text" />
-                    <p>
-                      <strong>Name:</strong> {file.name}<br/>
-                      <strong>Size:</strong> {filesize(file.size)}
-                    </p>
 										<p>
                     </p>
-										 <ReactTable
+										 <SchemaTable
 											data={data.data}
 											defaultPageSize={5}
 											columns={data.cols} />
@@ -41,4 +37,4 @@ class Preview extends Component {
   }
 }
 
-export default Preview;
+export default Schema;
