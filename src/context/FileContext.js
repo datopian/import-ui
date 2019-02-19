@@ -10,7 +10,8 @@ class FileProvider extends React.Component {
     data: null,
     type: null,
     metadata: {},
-    step: "home"
+    step: "home",
+    tableSchema: {}
   }
 
   constructor() {
@@ -20,6 +21,14 @@ class FileProvider extends React.Component {
     this.updateMetadata = this.updateMetadata.bind(this);
     this.loadDefault = this.loadDefault.bind(this);
     this.cancelUpload = this.cancelUpload.bind(this);
+    this.updateTableSchema = this.updateTableSchema.bind(this);
+  }
+
+  updateTableSchema(e) {
+    const column = e.target.dataset.tag;
+    const value = e.target.dataset.value;
+    let tableSchema = this.state.tableSchema;
+
   }
 
   fileData(file) {
@@ -104,14 +113,20 @@ class FileProvider extends React.Component {
         value={{
           file: this.state.file,
           fileUpload: this.fileUpload,
-          step: this.state.step,
           data: this.state.data,
+          loadDefault: this.loadDefault,
+
+          step: this.state.step,
+          type: this.state.type,
+          stepChange: this.stepChange,
+          cancelUpload: this.cancelUpload,
+
           metadata: this.state.metadata,
           updateMetadata: this.updateMetadata,
-          loadDefault: this.loadDefault,
-          cancelUpload: this.cancelUpload,
-          type: this.state.type,
-          stepChange: this.stepChange
+
+          tableSchema: this.state.tableSchema,
+          updateTableSchema: this.updateTableSchema
+
         }}
       >
         {this.props.children}

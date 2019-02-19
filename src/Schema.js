@@ -14,14 +14,16 @@ class Schema extends Component {
         <h1>Edit Schema</h1>
         <p className="lead">Edit the schema for your package..</p>
         <FileConsumer>
-          {({ file, data, metadata, updateMetadata }) => (
+          {({ file, data, metadata, updateMetadata, tableSchema, updateTableSchema }) => (
             <div>
                 {file && data ? (
                   <div>
-										<input id="title" onChange={updateMetadata} value={metadata.title} type="text" />
+										<input id="title" onChange={updateMetadata}  value={metadata.title} type="text" />
 										<p>
                     </p>
 										 <SchemaTable
+                      tableSchema={tableSchema} 
+                      updateTableSchema={updateTableSchema}
 											data={data.data}
 											defaultPageSize={5}
 											columns={data.cols} />

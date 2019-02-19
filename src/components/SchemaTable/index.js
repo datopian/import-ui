@@ -15,21 +15,18 @@ export default class SchemaTable extends React.Component {
     return <span className='number'>{n}</span>
   }
 
-  editCell(edit) {
-
-  }
-
-  typeSelect(value, index) {
+  typeSelect(value, index, column, updateTableSchema) {
     const options = ["string", "integer", "boolean"];
     let selectOptions = options.map((option) => {
       const key = `${value}-${option}-${index}`;
       return <option key={key}>{option}</option>
     });
-    return <select value={value} className="form-control schema select" name='schema-select'>{selectOptions}</select>
+    return <select data-tag={column} onChange={updateTableSchema} value={value} className="form-control schema select" name='schema-select'>{selectOptions}</select>
   }
 
-  schemaCell(props) {
+  schemaCell(props, updateTableSchema) {
     console.log(props);
+    const column = props.column.Header;
     if (props.index == 0) {
       return (
         <div>{props.value}
@@ -39,7 +36,7 @@ export default class SchemaTable extends React.Component {
    } else if (props.index == 1) {
        return (
        <div>
-        {this.typeSelect(props.value, props.index)}
+        {this.typeSelect(props.value, props.index, column, updateTableSchema)}
        </div>
        )
      }
@@ -73,7 +70,7 @@ export default class SchemaTable extends React.Component {
   */
 
   render() {
-    const { data, defaultPageSize, columns } = this.props;
+    const { data, defaultPageSize, columns, tableSchema, updateTableSchema } = this.props;
     const schemaData = [
       {
         Address: "",
@@ -98,7 +95,7 @@ export default class SchemaTable extends React.Component {
     ]
     let cols = JSON.parse(JSON.stringify( columns ));
     const emptyCols = cols.map((c) => {
-      c.Cell = (props) => this.schemaCell(props)
+      c.Cell = (props) => this.schemaCell(props, updateTableSchema)
       return c;
     });
 /*
