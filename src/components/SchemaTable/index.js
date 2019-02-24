@@ -30,6 +30,20 @@ const formats = (type) => {
   return fieldTypes[type];
 }
 
+
+const Errors = (props) => {
+  const errors = props.errors;
+  let report = (<div className="alert alert-success"><h4 className="alert-heading">Tidy Data!</h4><p>Your data has no validation errors.</p></div>);
+  if (errors.length > 0) {
+    const errorNotices = errors.map((error) => {
+      return <li key={`${error.row}-${error.field}`}>{error.message} in Row {error.row} in column {error.field}.</li>;
+    });
+    report = (<div className="alert alert-danger" role="alert"><h4 className="alert-heading">Validation Warning</h4><ul>{errorNotices}</ul></div>);
+  };
+  return (
+    report
+  )
+}
 export default class SchemaTable extends React.Component {
 
   colorCheck(n) {
@@ -85,10 +99,21 @@ export default class SchemaTable extends React.Component {
      }
   }
 
+  findError(rowNumber, field, errors) {
+    return errors.some((error) => {
+      return error.row === rowNumber && error.field === field;
+    });
+  }
 
-  renderEditable(cellInfo, updateDataFromCell, data) {
+  renderEditable(cellInfo, updateDataFromCell, data, errors) {
+    let color = "white";
+    if (this.findError(cellInfo.index, cellInfo.column.Header, errors)) {
+      color = "red";
+    }
+
     return (
       <div
+        style={{ backgroundColor: color, padding: "7px" }}
         contentEditable
         suppressContentEditableWarning
 				onBlur={e => {
@@ -101,7 +126,7 @@ export default class SchemaTable extends React.Component {
     );
   }	
   render() {
-    const { data, defaultPageSize, columns, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell } = this.props;
+    const { data, defaultPageSize, columns, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell, errors } = this.props;
     const desc = Object.values(tableSchema).reduce((r, v) => { const desc = 'desc' in v ? v.desc : ""; r[v.name] = desc; return r; }, {});
     const type = Object.values(tableSchema).reduce((r, v) => { r[v.name] = v.type; return r; }, {});
     const format = Object.values(tableSchema).reduce((r, v) => { const format = {}; format.type= v.type; format.format = v.format; r[v.name] = format; return r; }, {});
@@ -113,7 +138,7 @@ export default class SchemaTable extends React.Component {
     });
     const dcols = JSON.parse(JSON.stringify(columns));
     const dataCols = dcols.map((c) => {
-      c.Cell = (props) => this.renderEditable(props, updateDataFromCell, data);
+      c.Cell = (props) => this.renderEditable(props, updateDataFromCell, data, errors);
       return c;
     });
     return (
@@ -145,6 +170,9 @@ export default class SchemaTable extends React.Component {
               data={data}
               defaultPageSize={defaultPageSize}
               columns={dataCols} />
+              <div id="error-container">
+                <Errors errors={errors} />
+              </div>
            </span>
          </div>
       </div>

@@ -1,9 +1,7 @@
 import React from 'react'
 import Papa from 'papaparse';
-import Ajv from 'ajv';
-import {castInteger} from './cast';
-const ajv = new Ajv({schemaId: 'id', meta: false});
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
+import {castInteger, castNumber, castBoolean} from './cast';
+import {validateDataset} from './validate';
 const {Table} = require('tableschema')
 //import DataJS from 'data.js';
 
@@ -14,11 +12,7 @@ const initialState = {
   type: null,
   metadata: {},
   step: "home",
-	jsonSchema: {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "array",
-    "items": {}
-	},
+  errors: [],
   tableSchema: {}
 }
 class FileProvider extends React.Component {
@@ -40,9 +34,9 @@ class FileProvider extends React.Component {
 
   updateDataFromCell(e, cellInfo) {
     const value = e.target.innerHTML;
-		const data = Object.assign(this.state.data, {});
-	  data.data[cellInfo.index][cellInfo.column.id] = value;
-    this.validate(this.state.jsonSchema, data);
+    const data = Object.assign(this.state.data, {});
+    data.data[cellInfo.index][cellInfo.column.id] = value;
+    this.validate(data);
     this.setState({data});
   }
 
@@ -56,9 +50,8 @@ class FileProvider extends React.Component {
       }
       return r;
     });
-    const jsonSchema = this.tableToJsonSchema(tableSchema);
-    this.validate(jsonSchema, this.state.data);
-    this.setState({tableSchema, jsonSchema});
+    this.validate(this.state.data);
+    this.setState({tableSchema});
   }
 
   updateTableSchemaFormat(e) {
@@ -70,9 +63,8 @@ class FileProvider extends React.Component {
       }
       return r;
     });
-    const jsonSchema = this.tableToJsonSchema(tableSchema);
-    this.validate(jsonSchema, this.state.data);
-    this.setState({tableSchema, jsonSchema});
+    this.validate(this.state.data);
+    this.setState({tableSchema});
   }
 
   updateTableSchemaDesc(e) {
@@ -84,9 +76,8 @@ class FileProvider extends React.Component {
       }
       return r;
     });
-    const jsonSchema = this.tableToJsonSchema(tableSchema);
-    this.validate(jsonSchema, this.state.data);
-    this.setState({tableSchema, jsonSchema});
+    this.validate(this.state.data);
+    this.setState({tableSchema});
   }
 
   fileData(file) {
@@ -99,48 +90,56 @@ class FileProvider extends React.Component {
             accessor: key,
           }
         });
+        this.tableSchemaData(file, data);
         this.setState({data});
       },
       header: true
     });
   }
 
-  validate(jsonSchema, data) {
-    console.log(data.data);
-    console.log(JSON.stringify(jsonSchema));
-
-    const valid = ajv.compile(jsonSchema);
-    const val = valid(data.data);
-    console.log(valid.errors, val);
+  validate(data) {
+    const tableSchema = this.state.tableSchema;
+    const errors = validateDataset(data, tableSchema);
+    this.setState({errors});
   }
 
-  castData(data, tableSchema) {
-
-  }
-
-	tableToJsonSchema(tableSchema) {
-    const jsonSchema = Object.assign(this.state.jsonSchema, {});
-    const items = tableSchema.reduce((r, i) => {
-      r[i.name] = {
-        type: i.type,
-      //  format: i.format
-      }
-      return r;
-    }, {});
-    jsonSchema.items = {
-      type: "object",
-      properties: items
+  cast(item, type) {
+    switch(type) {
+      case "integer":
+        item = castInteger(type, item);
+        break;
+      case "number":
+        item = castNumber(type, item);
+        break;
+      case "bolean":
+        item = castBoolean(type, item);
+        break;
+      default:
+        break;
     }
-    return jsonSchema;
-	}
+    return item;
+  }
 
-  async tableSchemaData(file) {
+  castData(unCastData, tableSchema) {
+    const data = unCastData.data.map((row) => {
+      Object.values(tableSchema).forEach((col) => {
+        const type = col.type;
+        const item = row[col.name];
+        const cast = this.cast(item, type);
+        row[col.name] = cast;
+      });
+      return row;
+    });
+    this.setState(data);
+  }
+
+  async tableSchemaData(file, data) {
     // TODO: We are loading the file twice.
     const table = await Table.load(file, {delimiter: ','});
     await table.infer()
     const tableSchema = table.schema.descriptor.fields;
-    const jsonSchema = this.tableToJsonSchema(tableSchema);
-    this.setState({tableSchema, jsonSchema});
+    this.setState({tableSchema});
+    this.validate(data);
   }
 
   cancelUpload() {
@@ -165,6 +164,8 @@ class FileProvider extends React.Component {
     Papa.parse(remoteFile, {
       download: true,
       complete: (data) => {
+        // It grabs an extra empty row for some reason.
+        data.data.splice(-1,1);
         data.cols = data.meta.fields.map((key) => {
           key = key ? key : ' ';
           return {
@@ -176,7 +177,7 @@ class FileProvider extends React.Component {
           name: "Polling_Places_Madison.csv",
           size: 17653
         }
-        this.tableSchemaData(remoteFile);
+        this.tableSchemaData(remoteFile, data);
         // Start with the file name if we don't have a title yet.
         const metadata = 'title' in this.state.metadata ? this.state.metadata : {title: file.name};
         this.setState({data, metadata, file, step: "preview"});
@@ -188,7 +189,6 @@ class FileProvider extends React.Component {
   async fileUpload(e) {
     const file = e.target.files[0];
     if (file.type === 'text/csv') {
-      await this.tableSchemaData(file);
       this.fileData(file);
       // Start with the file name if we don't have a title yet.
       const metadata = 'title' in this.state.metadata ? this.state.metadata : {title: file.name};
@@ -214,6 +214,7 @@ class FileProvider extends React.Component {
           file: this.state.file,
           fileUpload: this.fileUpload,
           data: this.state.data,
+          errors: this.state.errors,
           loadDefault: this.loadDefault,
 
           step: this.state.step,

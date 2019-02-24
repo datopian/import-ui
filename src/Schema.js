@@ -5,6 +5,7 @@ import Loader from 'react-loader';
 import 'react-table/react-table.css';
 import SchemaTable from './components/SchemaTable';
 
+
 class Schema extends Component {
 
 
@@ -14,7 +15,7 @@ class Schema extends Component {
         <h1>Edit Schema</h1>
         <p className="lead">Edit the schema for your package..</p>
         <FileConsumer>
-          {({ file, data, step, metadata, updateMetadata, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell }) => (
+          {({ file, data, errors, step, metadata, updateMetadata, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell }) => (
             <div>
                 {step !== "schema" && (
 									<Redirect to="/" />
@@ -31,6 +32,7 @@ class Schema extends Component {
                       updateTableSchemaDesc={updateTableSchemaDesc}
                       updateDataFromCell={updateDataFromCell}
 											data={data.data}
+											errors={errors}
 											defaultPageSize={5}
 											columns={data.cols} />
 									</div>

@@ -103,3 +103,9 @@ main {
   position: relative;
   height: 40px;
 }
+#data-table .rt-td {
+  padding: 0;
+}
+#error-container {
+  margin-top: 20px;
+}
