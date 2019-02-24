@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { FileConsumer } from './context/FileContext';
 import { Redirect } from 'react-router'
+import Loader from 'react-loader';
 import 'react-table/react-table.css';
 import SchemaTable from './components/SchemaTable';
-import filesize from 'filesize';
 
 class Schema extends Component {
 
@@ -14,22 +14,28 @@ class Schema extends Component {
         <h1>Edit Schema</h1>
         <p className="lead">Edit the schema for your package..</p>
         <FileConsumer>
-          {({ file, data, metadata, updateMetadata, tableSchema, updateTableSchema }) => (
+          {({ file, data, step, metadata, updateMetadata, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell }) => (
             <div>
-                {file && data ? (
+                {step !== "schema" && (
+									<Redirect to="/" />
+								)}
+                {file && data && metadata ? (
                   <div>
 										<input id="title" onChange={updateMetadata}  value={metadata.title} type="text" />
 										<p>
                     </p>
 										 <SchemaTable
                       tableSchema={tableSchema} 
-                      updateTableSchema={updateTableSchema}
+                      updateTableSchemaFormat={updateTableSchemaFormat}
+                      updateTableSchemaType={updateTableSchemaType}
+                      updateTableSchemaDesc={updateTableSchemaDesc}
+                      updateDataFromCell={updateDataFromCell}
 											data={data.data}
 											defaultPageSize={5}
 											columns={data.cols} />
 									</div>
                 ) : (
-                  <Redirect to="/"/>
+                  <Loader />
                 )}
             </div>
           )}

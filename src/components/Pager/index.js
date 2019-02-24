@@ -35,7 +35,7 @@ export default class Pager extends React.Component {
     else if (step === "detail") {
       pager = (
         <>
-        <li className="page-item"><Link data="preview" onClick={stepChange} to="/schema" className="page-link">Previous</Link></li>
+        <li className="page-item"><Link data="schema" onClick={stepChange} to="/schema" className="page-link">Previous</Link></li>
         <li className="page-item"><Link data="publish" onClick={stepChange} to="/publish" className="page-link">Next</Link></li>
         </>
       );

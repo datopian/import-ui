@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FileConsumer } from './context/FileContext';
 import { Redirect } from 'react-router'
+import Loader from 'react-loader';
 import 'react-table/react-table.css';
 import ReactTable from 'react-table';
 import filesize from 'filesize';
@@ -14,8 +15,11 @@ class Preview extends Component {
         <h1>Preview</h1>
         <p className="lead">This is the preview page.</p>
         <FileConsumer>
-          {({ file, data, metadata, updateMetadata }) => (
+          {({ file, data, step, metadata, updateMetadata }) => (
             <div>
+                {step !== "preview" && (
+									<Redirect to="/" />
+								)}
                 {file && data ? (
                   <div>
 										<input id="title" onChange={updateMetadata} value={metadata.title} type="text" />
@@ -31,7 +35,7 @@ class Preview extends Component {
 											columns={data.cols} />
 									</div>
                 ) : (
-                  <Redirect to="/"/>
+                  <Loader />
                 )}
             </div>
           )}

@@ -1,18 +1,28 @@
 import React from 'react'
 import Papa from 'papaparse';
+import Ajv from 'ajv';
+import {castInteger} from './cast';
+const ajv = new Ajv({schemaId: 'id', meta: false});
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
+const {Table} = require('tableschema')
 //import DataJS from 'data.js';
 
 const FileContext = React.createContext()
-
+const initialState = {
+  file: false,
+  data: null,
+  type: null,
+  metadata: {},
+  step: "home",
+	jsonSchema: {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "items": {}
+	},
+  tableSchema: {}
+}
 class FileProvider extends React.Component {
-  state = {
-    file: false,
-    data: null,
-    type: null,
-    metadata: {},
-    step: "home",
-    tableSchema: {}
-  }
+  state = initialState;
 
   constructor() {
     super();
@@ -21,20 +31,68 @@ class FileProvider extends React.Component {
     this.updateMetadata = this.updateMetadata.bind(this);
     this.loadDefault = this.loadDefault.bind(this);
     this.cancelUpload = this.cancelUpload.bind(this);
-    this.updateTableSchema = this.updateTableSchema.bind(this);
+    this.updateTableSchemaType = this.updateTableSchemaType.bind(this);
+    this.updateTableSchemaFormat = this.updateTableSchemaFormat.bind(this);
+    this.updateTableSchemaDesc = this.updateTableSchemaDesc.bind(this);
+    this.updateDataFromCell = this.updateDataFromCell.bind(this);
+
   }
 
-  updateTableSchema(e) {
-    const column = e.target.dataset.tag;
-    const value = e.target.dataset.value;
-    let tableSchema = this.state.tableSchema;
+  updateDataFromCell(e, cellInfo) {
+    const value = e.target.innerHTML;
+		const data = Object.assign(this.state.data, {});
+	  data.data[cellInfo.index][cellInfo.column.id] = value;
+    this.validate(this.state.jsonSchema, data);
+    this.setState({data});
+  }
 
+  updateTableSchemaType(e) {
+    const column = e.target.dataset.tag;
+    const value = e.target.value;
+    const tableSchema = this.state.tableSchema.map((r) => {
+      if (r.name === column) {
+        r.type = value;
+        r.format = "default";
+      }
+      return r;
+    });
+    const jsonSchema = this.tableToJsonSchema(tableSchema);
+    this.validate(jsonSchema, this.state.data);
+    this.setState({tableSchema, jsonSchema});
+  }
+
+  updateTableSchemaFormat(e) {
+    const column = e.target.dataset.tag;
+    const value = e.target.value;
+    const tableSchema = this.state.tableSchema.map((r) => {
+      if (r.name === column) {
+        r.format = value;
+      }
+      return r;
+    });
+    const jsonSchema = this.tableToJsonSchema(tableSchema);
+    this.validate(jsonSchema, this.state.data);
+    this.setState({tableSchema, jsonSchema});
+  }
+
+  updateTableSchemaDesc(e) {
+    const column = e.target.dataset.tag;
+    const value = e.target.value;
+    const tableSchema = this.state.tableSchema.map((r) => {
+      if (r.name === column) {
+        r.desc = value;
+      }
+      return r;
+    });
+    const jsonSchema = this.tableToJsonSchema(tableSchema);
+    this.validate(jsonSchema, this.state.data);
+    this.setState({tableSchema, jsonSchema});
   }
 
   fileData(file) {
     return Papa.parse(file, {
-	    complete: (data) => {
-        data.cols = data.meta.fields.map((key) => {
+      complete: (data) => {
+         data.cols = data.meta.fields.map((key) => {
           key = key ? key : ' ';
           return {
             Header: key,
@@ -42,14 +100,51 @@ class FileProvider extends React.Component {
           }
         });
         this.setState({data});
-	    },
+      },
       header: true
     });
   }
 
+  validate(jsonSchema, data) {
+    console.log(data.data);
+    console.log(JSON.stringify(jsonSchema));
+
+    const valid = ajv.compile(jsonSchema);
+    const val = valid(data.data);
+    console.log(valid.errors, val);
+  }
+
+  castData(data, tableSchema) {
+
+  }
+
+	tableToJsonSchema(tableSchema) {
+    const jsonSchema = Object.assign(this.state.jsonSchema, {});
+    const items = tableSchema.reduce((r, i) => {
+      r[i.name] = {
+        type: i.type,
+      //  format: i.format
+      }
+      return r;
+    }, {});
+    jsonSchema.items = {
+      type: "object",
+      properties: items
+    }
+    return jsonSchema;
+	}
+
+  async tableSchemaData(file) {
+    // TODO: We are loading the file twice.
+    const table = await Table.load(file, {delimiter: ','});
+    await table.infer()
+    const tableSchema = table.schema.descriptor.fields;
+    const jsonSchema = this.tableToJsonSchema(tableSchema);
+    this.setState({tableSchema, jsonSchema});
+  }
+
   cancelUpload() {
-    const file = null;
-    this.setState({file});
+    this.setState(initialState);
   }
 
   updateMetadata(e) {
@@ -66,7 +161,8 @@ class FileProvider extends React.Component {
   }
 
   loadDefault(e) {
-    Papa.parse("https://s3.amazonaws.com/dkan-default-content-files/files/Polling_Places_Madison_0.csv", {
+    const remoteFile = "https://s3.amazonaws.com/dkan-default-content-files/files/Polling_Places_Madison_0.csv";
+    Papa.parse(remoteFile, {
       download: true,
       complete: (data) => {
         data.cols = data.meta.fields.map((key) => {
@@ -80,7 +176,10 @@ class FileProvider extends React.Component {
           name: "Polling_Places_Madison.csv",
           size: 17653
         }
-        this.setState({data, file});
+        this.tableSchemaData(remoteFile);
+        // Start with the file name if we don't have a title yet.
+        const metadata = 'title' in this.state.metadata ? this.state.metadata : {title: file.name};
+        this.setState({data, metadata, file, step: "preview"});
       },
       header: true
     });
@@ -89,9 +188,11 @@ class FileProvider extends React.Component {
   async fileUpload(e) {
     const file = e.target.files[0];
     if (file.type === 'text/csv') {
+      await this.tableSchemaData(file);
       this.fileData(file);
-      console.log(file);
-      this.setState({ file, type: null });
+      // Start with the file name if we don't have a title yet.
+      const metadata = 'title' in this.state.metadata ? this.state.metadata : {title: file.name};
+      this.setState({ file, metadata, type: null, step: "preview" });
     } else {
       this.setState({ type: "wrong"});
     }
@@ -103,9 +204,8 @@ class FileProvider extends React.Component {
   }
 
   render() {
-    // Start with the file name if we don't have a title yet.
     if (!('title' in this.state.metadata) && this.state.file && 'name' in this.state.file) {
-      this.state.metadata.title = this.state.file.name; // eslint-disable-line react/no-direct-mutation-state
+      //this.state.metadata.title = this.state.file.name; // eslint-disable-line react/no-direct-mutation-state
     }
 
     return (
@@ -125,7 +225,10 @@ class FileProvider extends React.Component {
           updateMetadata: this.updateMetadata,
 
           tableSchema: this.state.tableSchema,
-          updateTableSchema: this.updateTableSchema
+          updateTableSchemaType: this.updateTableSchemaType,
+          updateTableSchemaFormat: this.updateTableSchemaFormat,
+          updateTableSchemaDesc: this.updateTableSchemaDesc,
+          updateDataFromCell: this.updateDataFromCell
 
         }}
       >

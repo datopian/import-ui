@@ -87,3 +87,19 @@ main {
 .schema-help-row {
   height: 46px;
 }
+.edit-schema-input {
+  position: absolute;
+  top: 4px;
+}
+.edit-schema-cont input {
+  padding-right: 20px;
+}
+.edit-schema-cont svg {
+  position: absolute;
+  right: 2px;
+  top: 12px;
+}
+.edit-schema-cont {
+  position: relative;
+  height: 40px;
+}

@@ -7,8 +7,6 @@ const slowClick = (setLoading) => () => {
   setLoading(true);
   setTimeout(() => setLoading(false), 1000);
 };
-const identity = x => x;
-const stripPixels = x => parseInt(x.replace("px", ""), 100);
 const config = {
   angle: 90,
   spread: 100,
