@@ -18,24 +18,24 @@ class Schema extends Component {
           {({ file, data, errors, step, metadata, updateMetadata, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell }) => (
             <div>
                 {step !== "schema" && (
-									<Redirect to="/" />
-								)}
+                  <Redirect to="/" />
+                )}
                 {file && data && metadata ? (
                   <div>
-										<input id="title" onChange={updateMetadata}  value={metadata.title} type="text" />
-										<p>
+                    <input id="title" onChange={updateMetadata}  value={metadata.title} type="text" />
+                    <p>
                     </p>
-										 <SchemaTable
+                     <SchemaTable
                       tableSchema={tableSchema} 
                       updateTableSchemaFormat={updateTableSchemaFormat}
                       updateTableSchemaType={updateTableSchemaType}
                       updateTableSchemaDesc={updateTableSchemaDesc}
                       updateDataFromCell={updateDataFromCell}
-											data={data.data}
-											errors={errors}
-											defaultPageSize={5}
-											columns={data.cols} />
-									</div>
+                      data={data.data}
+                      errors={errors}
+                      defaultPageSize={5}
+                      columns={data.cols} />
+                  </div>
                 ) : (
                   <Loader />
                 )}

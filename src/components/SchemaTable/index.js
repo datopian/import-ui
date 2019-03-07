@@ -73,7 +73,7 @@ export default class SchemaTable extends React.Component {
     const column = props.column.Header;
     if (props.index === 0) {
       return (
-			  <div onBlur={updateTableSchemaDesc} tabIndex="1" className="edit-schema-cont">
+        <div onBlur={updateTableSchemaDesc} tabIndex="1" className="edit-schema-cont">
           <input className="edit-schema-input" type="text" key={`${column}-desc-input`} data-tag={column} defaultValue={props.value} /><FontAwesomeIcon icon={faEdit} />
         </div>
                )
@@ -116,15 +116,15 @@ export default class SchemaTable extends React.Component {
         style={{ backgroundColor: color, padding: "7px" }}
         contentEditable
         suppressContentEditableWarning
-				onBlur={e => {
-					updateDataFromCell(e, cellInfo);
+        onBlur={e => {
+          updateDataFromCell(e, cellInfo);
         }}
         dangerouslySetInnerHTML={{
           __html: data[cellInfo.index][cellInfo.column.id]
         }}
       />
     );
-  }	
+  } 
   render() {
     const { data, defaultPageSize, columns, tableSchema, updateTableSchemaType, updateTableSchemaFormat, updateTableSchemaDesc, updateDataFromCell, errors } = this.props;
     const desc = Object.values(tableSchema).reduce((r, v) => { const desc = 'desc' in v ? v.desc : ""; r[v.name] = desc; return r; }, {});
@@ -144,12 +144,12 @@ export default class SchemaTable extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-1">
-					<div id="schema-help">
+          <div id="schema-help">
             <div className="schema-help-row">Name <FontAwesomeIcon icon={faQuestionCircle} /></div>
             <div className="schema-help-row">Description <FontAwesomeIcon icon={faQuestionCircle} /></div>
             <div className="schema-help-row">Type <FontAwesomeIcon icon={faQuestionCircle} /></div>
             <div className="schema-help-row">Format <FontAwesomeIcon icon={faQuestionCircle} /></div>
-					</div>
+          </div>
         </div>
         <div className="col-sm-11">
           {tableSchema ? (

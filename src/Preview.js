@@ -18,22 +18,22 @@ class Preview extends Component {
           {({ file, data, step, metadata, updateMetadata }) => (
             <div>
                 {step !== "preview" && (
-									<Redirect to="/" />
-								)}
+                  <Redirect to="/" />
+                )}
                 {file && data ? (
                   <div>
-										<input id="title" onChange={updateMetadata} value={metadata.title} type="text" />
+                    <input id="title" onChange={updateMetadata} value={metadata.title} type="text" />
                     <p>
                       <strong>Name:</strong> {file.name}<br/>
                       <strong>Size:</strong> {filesize(file.size)}
                     </p>
-										<p>
+                    <p>
                     </p>
-										 <ReactTable
-											data={data.data}
-											defaultPageSize={5}
-											columns={data.cols} />
-									</div>
+                     <ReactTable
+                      data={data.data}
+                      defaultPageSize={5}
+                      columns={data.cols} />
+                  </div>
                 ) : (
                   <Loader />
                 )}

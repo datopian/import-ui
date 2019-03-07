@@ -32,16 +32,16 @@ class App extends Component {
         <div className='App'>
           <Router basename={process.env.PUBLIC_URL}>
             <FileProvider>
-							<Header />
-							<Breadcrumb />
-							<main role="main" className="container-fluid">
-								<Route exact={true} path='/' render={()=>(home)} />
-								<Route exact={true} path='/preview' render={()=>(preview)} />
-								<Route exact={true} path='/schema' render={()=>(schema)} />
-								<Route exact={true} path='/detail' render={()=>(detail)} />
-								<Route exact={true} path='/publish' render={()=>(publish)} />
-								<Pager />
-							</main>
+              <Header />
+              <Breadcrumb />
+              <main role="main" className="container-fluid">
+                <Route exact={true} path='/' render={()=>(home)} />
+                <Route exact={true} path='/preview' render={()=>(preview)} />
+                <Route exact={true} path='/schema' render={()=>(schema)} />
+                <Route exact={true} path='/detail' render={()=>(detail)} />
+                <Route exact={true} path='/publish' render={()=>(publish)} />
+                <Pager />
+              </main>
               <Footer />
             </FileProvider>
           </Router>
